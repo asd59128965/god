@@ -165,12 +165,10 @@
 
     <!-- 第一幕：主視覺 (Hero) -->
     <header class="relative w-full h-screen flex justify-center items-center overflow-hidden">
-        <!-- 背景圖：整合圖片 1 作為開場氛圍 -->
-        <div class="absolute inset-0 z-0">
-            <div<ㄎㄎ cl=s="w-full h-full object-cover opacity-60 scale-110 hero-im " a=t="Temple Main Visua></div>
+        <!-- 背景：移除圖片，改回純粹的氛圍光影 -->
+        <div class="absolute inset-0 z-0 bg-[#0a0a0a]">
             <!-- 漸層遮罩，製造神祕感 -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a]"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a0a0a]"></div>
         </div>
 
         <!-- 煙霧效果 (CSS 模擬) -->
@@ -178,6 +176,8 @@
             <!-- 這裡可以用 JS 生成更多煙霧粒子，暫時用氛圍光代替 -->
             <div class="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-gray-500 rounded-full blur-[150px] opacity-20 animate-pulse"></div>
             <div class="absolute bottom-[-20%] right-[20%] w-[600px] h-[600px] bg-[#8B0000] rounded-full blur-[150px] opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+            <!-- 增加一個金色光暈，代替原本圖片的視覺中心 -->
+            <div class="absolute top-[20%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] bg-[#D4AF37] rounded-full blur-[200px] opacity-5 animate-pulse" style="animation-duration: 4s;"></div>
         </div>
 
         <!-- 中央主標題 -->
