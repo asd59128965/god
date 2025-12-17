@@ -23,25 +23,34 @@
 
     <style>
         :root {
-            --c-gold: #D4AF37;
-            --c-gold-light: #F9E08E;
-            --c-red: #8B0000;
-            --c-dark: #0F0F0F;
+            /* 調整色票：金源財飽、紅色喜慶 */
+            --c-gold: #FFD700;       /* 正黃金 */
+            --c-gold-light: #FFEC8B; /* 亮金 */
+            --c-red: #E60012;        /* 喜慶紅 */
+            --c-red-dark: #8B0000;   /* 深紅 (用於邊框或陰影) */
+            --c-bg-dark: #2A0A0A;    /* 背景：深胭脂紅 (取代純黑) */
+            --c-bg-light: #3D1010;   /* 卡片背景：稍亮的深紅 */
+            --c-text-main: #FFF8DC;  /* 內文：米黃色 (Cornsilk) */
         }
 
         body {
-            background-color: var(--c-dark);
-            color: #e5e5e5;
+            background-color: var(--c-bg-dark);
+            color: var(--c-text-main);
             font-family: 'Noto Serif TC', serif;
             overflow-x: hidden;
-            /* 修改 1: 恢復顯示游標，解決操作不安全感 */
             cursor: default; 
-            /* 修改 2: 全站增加行高與字距，解決字擠在一起的問題 */
-            line-height: 2; 
-            letter-spacing: 0.1em; 
+            line-height: 1.8; 
+            letter-spacing: 0.05em; 
         }
 
-        /* 噪點紋理背景 */
+        @media (min-width: 768px) {
+            body {
+                line-height: 2;
+                letter-spacing: 0.1em;
+            }
+        }
+
+        /* 噪點紋理背景 (稍微調亮一點透明度，讓紅色透出來) */
         .noise-bg {
             position: fixed;
             top: 0;
@@ -50,33 +59,40 @@
             height: 100%;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.05;
+            opacity: 0.03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         /* 書法字體類 */
         .font-calligraphy {
             font-family: 'Ma Shan Zheng', cursive;
-            line-height: 1.4; /* 書法字標題行高不用太大 */
+            line-height: 1.4;
         }
 
-        /* 直排文字 - 增加間距 */
+        /* 直排文字 */
         .vertical-text {
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 0.4em; /* 增加直排文字間距 */
-            line-height: 2.5;      /* 增加直排文字行高 */
+            letter-spacing: 0.2em; 
+            line-height: 2;
+        }
+        
+        @media (min-width: 768px) {
+            .vertical-text {
+                letter-spacing: 0.4em;
+                line-height: 2.5;
+            }
         }
 
-        /* 金色漸層文字 */
+        /* 金色漸層文字 (加強亮度) */
         .gold-text {
-            background: linear-gradient(to bottom, var(--c-gold-light), var(--c-gold), #8a6e18);
+            background: linear-gradient(to bottom, #FFFACD, var(--c-gold), #DAA520);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0px 0px 20px rgba(212, 175, 55, 0.3);
+            text-shadow: 0px 0px 25px rgba(255, 215, 0, 0.4);
         }
 
-        /* 修改 3: 游標改為裝飾性跟隨，不影響點擊 */
+        /* 游標效果 */
         #cursor {
             position: fixed;
             top: 0;
@@ -85,11 +101,11 @@
             height: 8px;
             background-color: var(--c-gold);
             border-radius: 50%;
-            pointer-events: none; /* 重要：讓滑鼠穿透 */
+            pointer-events: none; 
             z-index: 9999;
             transform: translate(-50%, -50%);
-            mix-blend-mode: screen; /* 改為 screen 模式，在深色背景更亮 */
-            box-shadow: 0 0 15px 2px rgba(212, 175, 55, 0.8);
+            mix-blend-mode: screen; 
+            box-shadow: 0 0 15px 2px rgba(255, 215, 0, 0.8);
             transition: transform 0.1s;
         }
         
@@ -99,7 +115,7 @@
             left: 0;
             width: 40px;
             height: 40px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.5);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
@@ -110,7 +126,7 @@
         /* 捲軸效果遮罩 */
         .scroll-reveal-img {
             clip-path: inset(10% 10% 10% 10%);
-            filter: sepia(0.5) contrast(1.1);
+            filter: sepia(0.2) contrast(1.1) brightness(1.1); /* 讓圖片稍微亮一點 */
             transition: filter 0.5s;
         }
         .scroll-reveal-img:hover {
@@ -128,39 +144,60 @@
             z-index: 10;
         }
         
-        .seal {
-            border: 2px solid #a83232;
-            color: #a83232;
-            padding: 8px 16px; /* 增加印章內距 */
-            font-family: 'Ma Shan Zheng', cursive;
-            font-size: 1.3rem;
-            display: inline-block;
-            border-radius: 4px;
-            opacity: 0.9;
-            box-shadow: 0 0 15px rgba(168, 50, 50, 0.3);
-            letter-spacing: 0.2em;
+        /* 金元寶樣式 */
+        .ingot {
+            position: absolute;
+            pointer-events: none;
+            z-index: 15; /* 在煙霧之上，文字之下 */
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
         }
 
-        /* Oracle Styles */
+        /* 印章樣式 - 改為亮紅配金 */
+        .seal {
+            border: 2px solid var(--c-gold);
+            color: var(--c-bg-dark);
+            background-color: var(--c-gold);
+            padding: 4px 12px;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.1rem;
+            display: inline-block;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            letter-spacing: 0.1em;
+            font-weight: bold;
+        }
+        
+        @media (min-width: 768px) {
+            .seal {
+                padding: 8px 16px;
+                font-size: 1.3rem;
+                letter-spacing: 0.2em;
+            }
+        }
+
+        /* Oracle Styles - 調整為紅金配色 */
         .oracle-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: #e5e5e5;
+            background: rgba(61, 16, 16, 0.6); /* 深紅半透明 */
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: #FFF8DC;
             resize: none;
             transition: all 0.3s ease;
-            line-height: 1.8; /* 輸入框內文字行高 */
+            line-height: 1.6;
         }
         .oracle-input:focus {
             outline: none;
             border-color: var(--c-gold);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            background: rgba(61, 16, 16, 0.9);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        .oracle-input::placeholder {
+            color: #cfb997; /* 淺金色佔位符 */
         }
         
         .loading-incense {
             width: 4px;
             height: 60px;
-            background: linear-gradient(to top, #555, #888);
+            background: linear-gradient(to top, #8B0000, #FFD700); /* 紅金香 */
             position: relative;
             margin: 0 auto;
             border-radius: 2px;
@@ -184,7 +221,7 @@
             left: 50%;
             width: 10px;
             height: 10px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             filter: blur(5px);
             animation: rise 2s infinite linear;
@@ -199,13 +236,28 @@
             100% { transform: translate(-50%, -80px) scale(3); opacity: 0; }
         }
         
+        /* 結果卡片背景 - 改為深紅漸層 */
         .oracle-response-card {
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23D4AF37' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"), linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23FFD700' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"), linear-gradient(to bottom, #4A0404, #2A0A0A);
+            border-color: var(--c-gold);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.5);
         }
 
-        /* 步驟卡片 - 增加內距 */
         .step-card {
-             padding: 2.5rem; /* 增加卡片內距 */
+             padding: 1.5rem;
+             background-color: rgba(61, 16, 16, 0.4); /* 深紅背景 */
+             border-color: rgba(255, 215, 0, 0.3);
+        }
+        @media (min-width: 768px) {
+            .step-card {
+                padding: 2.5rem;
+            }
+        }
+        
+        .step-card:hover {
+            border-color: var(--c-gold);
+            background-color: rgba(61, 16, 16, 0.8);
+            box-shadow: 0 0 15px rgba(230, 0, 18, 0.2);
         }
     </style>
 </head>
@@ -214,91 +266,96 @@
     <!-- 噪點遮罩 -->
     <div class="noise-bg"></div>
     
-    <!-- 游標 (純裝飾) -->
+    <!-- 財氣動畫容器 -->
+    <div id="wealth-container" class="fixed inset-0 pointer-events-none z-10 overflow-hidden"></div>
+
+    <!-- 游標 -->
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
     <!-- 載入動畫 (開場) -->
-    <div id="loader" class="fixed inset-0 bg-black z-[100] flex flex-col justify-center items-center text-[#D4AF37]">
-        <div class="text-4xl font-calligraphy animate-pulse tracking-widest">誠心 • 敬拜</div>
-        <div class="mt-4 w-32 h-[1px] bg-[#D4AF37]/30 relative overflow-hidden">
-            <div class="absolute inset-0 bg-[#D4AF37] w-full h-full -translate-x-full" id="loader-bar"></div>
+    <div id="loader" class="fixed inset-0 bg-[#2A0A0A] z-[100] flex flex-col justify-center items-center text-[#FFD700]">
+        <div class="text-4xl font-calligraphy animate-pulse tracking-widest">金玉滿堂 • 誠心敬拜</div>
+        <div class="mt-4 w-32 h-[2px] bg-[#FFD700]/30 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[#FFD700] w-full h-full -translate-x-full" id="loader-bar"></div>
         </div>
     </div>
 
     <!-- 導覽列 -->
-    <nav class="fixed top-0 w-full p-8 flex justify-between items-start z-40 mix-blend-difference">
-        <div class="vertical-text text-2xl font-bold text-[#D4AF37] tracking-widest border-r-2 border-[#D4AF37] pr-4 h-32">
+    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-start z-40">
+        <div class="vertical-text text-xl md:text-2xl font-bold text-[#FFD700] tracking-widest border-r-2 border-[#FFD700] pr-3 md:pr-4 h-24 md:h-32 shadow-[4px_0_10px_rgba(255,215,0,0.1)]">
             天運歲次
         </div>
-        <div class="flex flex-col gap-8 text-base tracking-[0.3em] font-light text-white/80">
-            <a href="#" class="hover:text-[#D4AF37] transition-colors interactable">緣起</a>
-            <a href="#oracle-section" class="hover:text-[#D4AF37] transition-colors interactable text-[#D4AF37]">靈境問事 ✨</a>
-            <a href="#gallery-container" class="hover:text-[#D4AF37] transition-colors interactable">參拜</a>
+        <div class="flex flex-col gap-6 md:gap-8 text-sm md:text-base tracking-[0.3em] font-light text-[#FFF8DC]">
+            <a href="#" class="hover:text-[#FFD700] transition-colors interactable">緣起</a>
+            <a href="#oracle-section" class="hover:text-[#FFD700] transition-colors interactable text-[#FFD700] font-bold">問事 ✨</a>
+            <a href="#gallery-container" class="hover:text-[#FFD700] transition-colors interactable">參拜</a>
         </div>
     </nav>
 
     <!-- 第一幕：主視覺 (Hero) -->
     <header class="relative w-full h-screen flex justify-center items-center overflow-hidden">
-        <div class="absolute inset-0 z-0 bg-[#0a0a0a]">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a0a0a]"></div>
+        <div class="absolute inset-0 z-0 bg-[#2A0A0A]">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#2A0A0A]"></div>
         </div>
 
-        <div class="smoke-container opacity-50">
-            <div class="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-gray-500 rounded-full blur-[150px] opacity-20 animate-pulse"></div>
-            <div class="absolute bottom-[-20%] right-[20%] w-[600px] h-[600px] bg-[#8B0000] rounded-full blur-[150px] opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
-            <div class="absolute top-[20%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] bg-[#D4AF37] rounded-full blur-[200px] opacity-5 animate-pulse" style="animation-duration: 4s;"></div>
+        <div class="smoke-container opacity-60">
+            <!-- 煙霧改為紅金色調 -->
+            <div class="absolute bottom-[-20%] left-[20%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#8B0000] rounded-full blur-[100px] md:blur-[150px] opacity-30 animate-pulse"></div>
+            <div class="absolute bottom-[-20%] right-[20%] w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-[#FFD700] rounded-full blur-[100px] md:blur-[150px] opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-[20%] left-[50%] -translate-x-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-[#E60012] rounded-full blur-[120px] md:blur-[200px] opacity-10 animate-pulse" style="animation-duration: 4s;"></div>
         </div>
 
-        <div class="relative z-10 flex flex-col items-center gap-10">
-            <div class="seal mb-6 interactable">永運福德</div>
-            <h1 class="vertical-text font-calligraphy text-7xl md:text-9xl gold-text leading-relaxed tracking-widest opacity-0 hero-text">
+        <div class="relative z-10 flex flex-col items-center gap-6 md:gap-10">
+            <div class="seal mb-4 md:mb-6 interactable">永運福德</div>
+            
+            <h1 class="vertical-text font-calligraphy text-5xl md:text-9xl gold-text leading-relaxed tracking-widest opacity-0 hero-text">
                 永運土地公祠
             </h1>
-            <p class="text-[#e5e5e5]/80 tracking-[0.8em] mt-8 text-base md:text-lg border-t border-[#D4AF37]/50 pt-6 opacity-0 hero-text">
-                護佑鄉里 • 萬古流芳
+            <p class="text-[#FFF8DC]/90 tracking-[0.6em] md:tracking-[0.8em] mt-6 md:mt-8 text-sm md:text-lg border-t border-[#FFD700]/50 pt-4 md:pt-6 opacity-0 hero-text font-bold">
+                護佑鄉里 • 財源廣進
             </p>
             
-            <!-- 新增：往下捲動提示 -->
-            <div class="absolute bottom-10 opacity-0 hero-text animate-bounce text-[#D4AF37]/60 text-sm tracking-widest">
-                ↓ 往下捲動
+            <!-- 往下捲動提示 -->
+            <div class="absolute bottom-20 md:bottom-10 opacity-0 hero-text animate-bounce text-[#FFD700] text-xs md:text-sm tracking-widest drop-shadow-[0_0_5px_rgba(255,215,0,0.5)]">
+                ↓ 往下捲動 納福
             </div>
         </div>
     </header>
 
     <!-- 第二幕：引言 (Scroll Text) -->
-    <section class="min-h-[80vh] w-full flex flex-col justify-center items-center py-24 px-6 relative bg-[#0F0F0F]">
-        <div class="max-w-4xl text-center space-y-16">
-            <p class="text-3xl md:text-4xl font-light leading-loose text-white/90 reveal-text">
-                入廟見神，<span class="text-[#D4AF37]">心誠則靈</span>。<br>
-                每一縷香煙，都是人與天的對話。
+    <section class="min-h-[60vh] md:min-h-[80vh] w-full flex flex-col justify-center items-center py-16 md:py-24 px-6 relative bg-[#3D1010]">
+        <div class="max-w-4xl text-center space-y-10 md:space-y-16">
+            <p class="text-2xl md:text-4xl font-light leading-loose text-[#FFF8DC] reveal-text">
+                入廟見神，<span class="text-[#FFD700] font-bold">財源廣進</span>。<br>
+                每一縷香煙，都是對美好未來的期盼。
             </p>
-            <p class="text-lg text-gray-400 leading-loose reveal-text tracking-widest">
-                此地承載著百年的信仰與記憶，<br>透過數位影像，我們將神明的莊嚴與慈悲，<br>永久留存在這方寸之間。
+            <p class="text-base md:text-lg text-[#FFF8DC]/80 leading-loose reveal-text tracking-widest">
+                此地承載著百年的信仰與記憶，<br>透過數位影像，我們將神明的<span class="text-[#FFD700]">福氣與財氣</span>，<br>永久留存在這方寸之間。
             </p>
-            <div class="w-[1px] h-32 bg-gradient-to-b from-[#D4AF37] to-transparent mx-auto mt-10 reveal-line"></div>
+            <div class="w-[2px] h-20 md:h-32 bg-gradient-to-b from-[#FFD700] to-transparent mx-auto mt-8 md:mt-10 reveal-line shadow-[0_0_10px_#FFD700]"></div>
         </div>
     </section>
 
     <!-- 第三幕：橫向捲軸畫廊 (Gallery) -->
-    <!-- 增加字體大小，調整行距 -->
-    <section id="gallery-container" class="relative w-full h-screen bg-[#0a0a0a] overflow-hidden flex items-center">
+    <section id="gallery-container" class="relative w-full h-screen bg-[#2A0A0A] overflow-hidden flex items-center">
         <!-- 背景浮水印 -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] opacity-[0.03] font-calligraphy pointer-events-none select-none text-[#8B0000]">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] opacity-[0.05] font-calligraphy pointer-events-none select-none text-[#E60012]">
             眾神護佑
         </div>
 
-        <div class="gallery-wrapper flex px-[5vw] h-[80vh] items-center gap-[8vw] w-fit">
+        <div class="gallery-wrapper flex px-[5vw] h-[75vh] md:h-[80vh] items-center gap-[10vw] md:gap-[8vw] w-fit">
             
             <!-- 標題區塊 -->
-            <div class="w-[40vw] h-full flex flex-col justify-center shrink-0 pl-10">
-                <h2 class="vertical-text text-6xl font-bold text-[#D4AF37] mb-8 font-calligraphy">參拜眾神</h2>
-                <!-- 新增操作提示 -->
-                <div class="flex items-center gap-4 mt-8 opacity-70">
-                    <div class="w-12 h-[1px] bg-[#D4AF37]"></div>
-                    <p class="text-[#D4AF37] text-sm tracking-widest">請繼續往下捲動</p>
+            <div class="w-[80vw] md:w-[40vw] h-full flex flex-col justify-center shrink-0 pl-4 md:pl-10">
+                <h2 class="vertical-text text-5xl md:text-6xl font-bold text-[#FFD700] mb-6 md:mb-8 font-calligraphy drop-shadow-lg">參拜眾神</h2>
+                
+                <div class="flex items-center gap-4 mt-6 md:mt-8 opacity-90">
+                    <div class="w-8 md:w-12 h-[2px] bg-[#FFD700]"></div>
+                    <p class="text-[#FFD700] text-xs md:text-sm tracking-widest">請繼續往下捲動</p>
                 </div>
-                <p class="vertical-text text-white/70 text-xl leading-loose h-[60%] border-r border-white/20 pr-12 mt-10">
+                
+                <p class="vertical-text text-[#FFF8DC] text-lg md:text-xl leading-loose h-[55%] border-r border-[#FFD700]/30 pr-8 md:pr-12 mt-8 md:mt-10">
                     依序參香，心誠則靈。<br>
                     各司其職，護佑蒼生。<br>
                     神恩浩蕩，澤被萬民。
@@ -307,131 +364,131 @@
 
             <!-- 神明卡片 1 -->
             <div class="w-[85vw] md:w-[65vw] h-full relative shrink-0 interactable gallery-item group">
-                <div class="absolute inset-0 border border-[#D4AF37]/30 z-20 m-6 pointer-events-none transition-all duration-500 group-hover:m-4 group-hover:border-[#D4AF37]/80"></div>
-                <img src="https://placehold.co/800x1200/1a1a1a/D4AF37?text=玉皇上帝&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-80 group-hover:opacity-100 transition-opacity" alt="玉皇上帝">
-                <div class="absolute bottom-12 right-12 z-30 bg-black/90 px-8 py-10 border-l-4 border-[#D4AF37] backdrop-blur-sm">
-                    <div class="vertical-text text-3xl font-bold text-[#D4AF37]">玉皇上帝</div>
-                    <div class="mt-6 text-sm text-gray-300 vertical-text h-40 tracking-widest leading-loose">萬神之主 • 參拜首位</div>
+                <div class="absolute inset-0 border border-[#FFD700]/40 z-20 m-4 md:m-6 pointer-events-none transition-all duration-500 group-hover:m-3 md:group-hover:m-4 group-hover:border-[#FFD700]"></div>
+                <img src="https://placehold.co/800x1200/3D1010/FFD700?text=玉皇上帝&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-90 group-hover:opacity-100 transition-opacity" alt="玉皇上帝">
+                <div class="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-30 bg-[#2A0A0A]/95 px-6 py-8 md:px-8 md:py-10 border-l-4 border-[#FFD700] backdrop-blur-sm shadow-xl">
+                    <div class="vertical-text text-2xl md:text-3xl font-bold text-[#FFD700]">玉皇上帝</div>
+                    <div class="mt-4 md:mt-6 text-xs md:text-sm text-[#FFF8DC] vertical-text h-32 md:h-40 tracking-widest leading-loose">萬神之主 • 參拜首位</div>
                 </div>
             </div>
 
             <!-- 神明卡片 2 -->
             <div class="w-[85vw] md:w-[65vw] h-full relative shrink-0 interactable gallery-item group">
-                <div class="absolute inset-0 border border-[#D4AF37]/30 z-20 m-6 pointer-events-none transition-all duration-500 group-hover:m-4 group-hover:border-[#D4AF37]/80"></div>
-                <img src="https://placehold.co/800x1200/1a1a1a/D4AF37?text=福德正神&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-80 group-hover:opacity-100 transition-opacity" alt="福德正神">
-                <div class="absolute bottom-12 right-12 z-30 bg-black/90 px-8 py-10 border-l-4 border-[#D4AF37] backdrop-blur-sm">
-                    <div class="vertical-text text-3xl font-bold text-[#D4AF37]">福德正神</div>
-                     <div class="mt-6 text-sm text-gray-300 vertical-text h-40 tracking-widest leading-loose">鎮守鄉里 • 有求必應</div>
+                <div class="absolute inset-0 border border-[#FFD700]/40 z-20 m-4 md:m-6 pointer-events-none transition-all duration-500 group-hover:m-3 md:group-hover:m-4 group-hover:border-[#FFD700]"></div>
+                <img src="https://placehold.co/800x1200/3D1010/FFD700?text=福德正神&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-90 group-hover:opacity-100 transition-opacity" alt="福德正神">
+                <div class="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-30 bg-[#2A0A0A]/95 px-6 py-8 md:px-8 md:py-10 border-l-4 border-[#FFD700] backdrop-blur-sm shadow-xl">
+                    <div class="vertical-text text-2xl md:text-3xl font-bold text-[#FFD700]">福德正神</div>
+                     <div class="mt-4 md:mt-6 text-xs md:text-sm text-[#FFF8DC] vertical-text h-32 md:h-40 tracking-widest leading-loose">鎮守鄉里 • 招財進寶</div>
                 </div>
             </div>
 
             <!-- 神明卡片 3 -->
             <div class="w-[85vw] md:w-[65vw] h-full relative shrink-0 interactable gallery-item group">
-                <div class="absolute inset-0 border border-[#D4AF37]/30 z-20 m-6 pointer-events-none transition-all duration-500 group-hover:m-4 group-hover:border-[#D4AF37]/80"></div>
-                <img src="https://placehold.co/800x1200/1a1a1a/D4AF37?text=月下老人&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-80 group-hover:opacity-100 transition-opacity" alt="月下老人">
-                <div class="absolute bottom-12 right-12 z-30 bg-black/90 px-8 py-10 border-l-4 border-[#D4AF37] backdrop-blur-sm">
-                    <div class="vertical-text text-3xl font-bold text-[#D4AF37]">月下老人</div>
-                     <div class="mt-6 text-sm text-gray-300 vertical-text h-40 tracking-widest leading-loose">千里姻緣 • 紅線相繫</div>
+                <div class="absolute inset-0 border border-[#FFD700]/40 z-20 m-4 md:m-6 pointer-events-none transition-all duration-500 group-hover:m-3 md:group-hover:m-4 group-hover:border-[#FFD700]"></div>
+                <img src="https://placehold.co/800x1200/3D1010/FFD700?text=月下老人&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-90 group-hover:opacity-100 transition-opacity" alt="月下老人">
+                <div class="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-30 bg-[#2A0A0A]/95 px-6 py-8 md:px-8 md:py-10 border-l-4 border-[#FFD700] backdrop-blur-sm shadow-xl">
+                    <div class="vertical-text text-2xl md:text-3xl font-bold text-[#FFD700]">月下老人</div>
+                     <div class="mt-4 md:mt-6 text-xs md:text-sm text-[#FFF8DC] vertical-text h-32 md:h-40 tracking-widest leading-loose">千里姻緣 • 紅線相繫</div>
                 </div>
             </div>
 
             <!-- 神明卡片 4 -->
             <div class="w-[85vw] md:w-[65vw] h-full relative shrink-0 interactable gallery-item group">
-                <div class="absolute inset-0 border border-[#D4AF37]/30 z-20 m-6 pointer-events-none transition-all duration-500 group-hover:m-4 group-hover:border-[#D4AF37]/80"></div>
-                <img src="https://placehold.co/800x1200/1a1a1a/D4AF37?text=土地婆&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-80 group-hover:opacity-100 transition-opacity" alt="土地婆">
-                <div class="absolute bottom-12 right-12 z-30 bg-black/90 px-8 py-10 border-l-4 border-[#D4AF37] backdrop-blur-sm">
-                    <div class="vertical-text text-3xl font-bold text-[#D4AF37]">土地婆</div>
-                     <div class="mt-6 text-sm text-gray-300 vertical-text h-40 tracking-widest leading-loose">柔和慈悲 • 圓滿幸福</div>
+                <div class="absolute inset-0 border border-[#FFD700]/40 z-20 m-4 md:m-6 pointer-events-none transition-all duration-500 group-hover:m-3 md:group-hover:m-4 group-hover:border-[#FFD700]"></div>
+                <img src="https://placehold.co/800x1200/3D1010/FFD700?text=土地婆&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-90 group-hover:opacity-100 transition-opacity" alt="土地婆">
+                <div class="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-30 bg-[#2A0A0A]/95 px-6 py-8 md:px-8 md:py-10 border-l-4 border-[#FFD700] backdrop-blur-sm shadow-xl">
+                    <div class="vertical-text text-2xl md:text-3xl font-bold text-[#FFD700]">土地婆</div>
+                     <div class="mt-4 md:mt-6 text-xs md:text-sm text-[#FFF8DC] vertical-text h-32 md:h-40 tracking-widest leading-loose">柔和慈悲 • 圓滿幸福</div>
                 </div>
             </div>
 
             <!-- 神明卡片 5 -->
             <div class="w-[85vw] md:w-[65vw] h-full relative shrink-0 interactable gallery-item group">
-                <div class="absolute inset-0 border border-[#D4AF37]/30 z-20 m-6 pointer-events-none transition-all duration-500 group-hover:m-4 group-hover:border-[#D4AF37]/80"></div>
-                <img src="https://placehold.co/800x1200/1a1a1a/D4AF37?text=義勇諸公&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-80 group-hover:opacity-100 transition-opacity" alt="義勇諸公">
-                <div class="absolute bottom-12 right-12 z-30 bg-black/90 px-8 py-10 border-l-4 border-[#D4AF37] backdrop-blur-sm">
-                    <div class="vertical-text text-3xl font-bold text-[#D4AF37]">義勇諸公</div>
-                     <div class="mt-6 text-sm text-gray-300 vertical-text h-40 tracking-widest leading-loose">驅逐邪佞 • 守護平安</div>
+                <div class="absolute inset-0 border border-[#FFD700]/40 z-20 m-4 md:m-6 pointer-events-none transition-all duration-500 group-hover:m-3 md:group-hover:m-4 group-hover:border-[#FFD700]"></div>
+                <img src="https://placehold.co/800x1200/3D1010/FFD700?text=義勇諸公&font=serif" class="w-full h-full object-cover scroll-reveal-img opacity-90 group-hover:opacity-100 transition-opacity" alt="義勇諸公">
+                <div class="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-30 bg-[#2A0A0A]/95 px-6 py-8 md:px-8 md:py-10 border-l-4 border-[#FFD700] backdrop-blur-sm shadow-xl">
+                    <div class="vertical-text text-2xl md:text-3xl font-bold text-[#FFD700]">義勇諸公</div>
+                     <div class="mt-4 md:mt-6 text-xs md:text-sm text-[#FFF8DC] vertical-text h-32 md:h-40 tracking-widest leading-loose">驅逐邪佞 • 守護平安</div>
                 </div>
             </div>
 
-            <div class="w-[40vw] h-full flex items-center justify-center shrink-0">
-                 <h2 class="vertical-text text-6xl font-calligraphy text-white/20">有求必應</h2>
+            <div class="w-[80vw] md:w-[40vw] h-full flex items-center justify-center shrink-0">
+                 <h2 class="vertical-text text-5xl md:text-6xl font-calligraphy text-[#FFD700]/30">有求必應</h2>
             </div>
         </div>
     </section>
 
     <!-- 第四幕：全姻緣七步驟 (Seven Steps) -->
-    <section class="min-h-screen w-full bg-[#0F0F0F] text-[#e5e5e5] py-24 px-6 relative z-20">
+    <section class="min-h-screen w-full bg-[#1F0505] text-[#FFF8DC] py-16 md:py-24 px-4 md:px-6 relative z-20">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-24">
-                <div class="seal mx-auto border-[#D4AF37] text-[#D4AF37] mb-8">求緣儀軌</div>
-                <h2 class="text-5xl md:text-6xl font-calligraphy text-white mb-6">全姻緣七步驟</h2>
-                <p class="text-gray-500 tracking-[0.5em] text-base">依循古法 • 締結良緣</p>
+            <div class="text-center mb-16 md:mb-24">
+                <div class="seal mx-auto mb-6 md:mb-8 text-black">求緣儀軌</div>
+                <h2 class="text-4xl md:text-6xl font-calligraphy text-[#FFD700] mb-4 md:mb-6">全姻緣七步驟</h2>
+                <p class="text-[#FFF8DC]/60 tracking-[0.3em] md:tracking-[0.5em] text-sm md:text-base">依循古法 • 締結良緣</p>
             </div>
 
-            <div class="space-y-16 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#D4AF37]/50 before:to-transparent">
+            <div class="space-y-12 md:space-y-16 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#FFD700]/50 before:to-transparent">
                 
                 <!-- Step 1 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">壹</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">淨心誠意</h3>
-                        <p class="text-gray-300 text-lg leading-loose">入廟前整理衣冠，摒除雜念，以最虔誠之心準備參拜。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">壹</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">淨心誠意</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">入廟前整理衣冠，摒除雜念，以最虔誠之心準備參拜。</p>
                     </div>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">貳</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">敬拜天公</h3>
-                        <p class="text-gray-300 text-lg leading-loose">先向外朝拜玉皇大帝（天公），稟報姓名與來意，祈求庇佑。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">貳</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">敬拜天公</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">先向外朝拜玉皇大帝（天公），稟報姓名與來意，祈求庇佑。</p>
                     </div>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">參</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">主神稟奏</h3>
-                        <p class="text-gray-300 text-lg leading-loose">入正殿向主神請安，詳細稟報生辰八字與祈求事項。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">參</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">主神稟奏</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">入正殿向主神請安，詳細稟報生辰八字與祈求事項。</p>
                     </div>
                 </div>
 
                 <!-- Step 4 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">肆</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">月老祈緣</h3>
-                        <p class="text-gray-300 text-lg leading-loose">至月老尊前，說明理想對象條件，祈求紅線牽引良緣。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">肆</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">月老祈緣</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">至月老尊前，說明理想對象條件，祈求紅線牽引良緣。</p>
                     </div>
                 </div>
 
                 <!-- Step 5 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">伍</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">擲筊求線</h3>
-                        <p class="text-gray-300 text-lg leading-loose">誠心擲筊，獲聖杯後方可求取紅線，並過香爐三圈加持。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">伍</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">擲筊求線</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">誠心擲筊，獲聖杯後方可求取紅線，並過香爐三圈加持。</p>
                     </div>
                 </div>
 
                 <!-- Step 6 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">陸</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">喜糖結緣</h3>
-                        <p class="text-gray-300 text-lg leading-loose">將準備之喜糖或供品留下，與眾生結緣，分享喜氣。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">陸</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">喜糖結緣</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">將準備之喜糖或供品留下，與眾生結緣，分享喜氣。</p>
                     </div>
                 </div>
 
                 <!-- Step 7 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active step-card-container">
-                    <div class="flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#0F0F0F] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(212,175,55,0.3)] z-10 text-[#D4AF37] font-serif text-xl">柒</div>
-                    <div class="w-[calc(100%-5rem)] md:w-[calc(50%-3rem)] step-card border border-[#D4AF37]/20 bg-[#1a1a1a]/50 rounded-lg hover:border-[#D4AF37]/50 transition-colors duration-500">
-                        <h3 class="text-2xl font-bold text-[#D4AF37] mb-4 font-calligraphy">圓滿謝恩</h3>
-                        <p class="text-gray-300 text-lg leading-loose">參拜結束，燒化金紙（或以米代金），向眾神謝恩，圓滿禮成。</p>
+                    <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-[#FFD700] bg-[#8B0000] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(255,215,0,0.5)] z-10 text-[#FFD700] font-serif text-lg md:text-xl font-bold">柒</div>
+                    <div class="w-[calc(100%-3.5rem)] md:w-[calc(50%-3rem)] step-card rounded-lg transition-colors duration-500 ml-4 md:ml-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-[#FFD700] mb-3 md:mb-4 font-calligraphy">圓滿謝恩</h3>
+                        <p class="text-[#FFF8DC] text-base md:text-lg leading-loose">參拜結束，燒化金紙（或以米代金），向眾神謝恩，圓滿禮成。</p>
                     </div>
                 </div>
 
@@ -440,30 +497,30 @@
     </section>
 
     <!-- NEW SECTION: Gemini Powered AI Oracle -->
-    <section id="oracle-section" class="min-h-screen w-full flex flex-col justify-center items-center py-24 px-6 relative bg-[#151515] overflow-hidden">
+    <section id="oracle-section" class="min-h-screen w-full flex flex-col justify-center items-center py-16 md:py-24 px-4 md:px-6 relative bg-[#2A0A0A] overflow-hidden">
         <!-- 裝飾背景文字 -->
-        <div class="absolute top-10 right-10 vertical-text text-8xl font-calligraphy text-[#D4AF37] opacity-5 pointer-events-none select-none">
+        <div class="absolute top-10 right-10 vertical-text text-6xl md:text-8xl font-calligraphy text-[#E60012] opacity-10 pointer-events-none select-none">
             天機神算
         </div>
 
         <div class="max-w-4xl w-full z-10 relative">
-            <div class="text-center mb-16">
-                <div class="seal mx-auto border-[#D4AF37] text-[#D4AF37] mb-6">靈境問事</div>
-                <h2 class="text-4xl md:text-5xl font-calligraphy text-white mb-8">數位靈籤・神明指引 ✨</h2>
-                <p class="text-gray-300 tracking-[0.2em] text-lg leading-loose">
+            <div class="text-center mb-12 md:mb-16">
+                <div class="seal mx-auto mb-4 md:mb-6 text-black">靈境問事</div>
+                <h2 class="text-3xl md:text-5xl font-calligraphy text-[#FFD700] mb-6 md:mb-8 drop-shadow-[0_0_10px_rgba(255,215,0,0.3)]">數位靈籤・神明指引 ✨</h2>
+                <p class="text-[#FFF8DC]/80 tracking-[0.15em] md:tracking-[0.2em] text-base md:text-lg leading-loose">
                     請誠心默念您的姓名、生辰、住址。<br>
                     將您的煩惱或疑問寫下，祈求土地公賜予靈籤指引。
                 </p>
             </div>
 
             <!-- 輸入區 -->
-            <div id="oracle-input-container" class="space-y-10 transition-all duration-500">
-                <textarea id="user-query" rows="5" class="oracle-input w-full p-8 rounded-lg font-serif text-xl tracking-wide placeholder-gray-600 focus:placeholder-gray-500 text-center" placeholder="在此輸入您的疑惑... &#10;（例如：最近工作運途如何？ 或 請問這段姻緣是否會有結果？）"></textarea>
+            <div id="oracle-input-container" class="space-y-8 md:space-y-10 transition-all duration-500">
+                <textarea id="user-query" rows="5" class="oracle-input w-full p-4 md:p-8 rounded-lg font-serif text-base md:text-xl tracking-wide text-center" placeholder="在此輸入您的疑惑... &#10;（例如：最近工作運途如何？ 或 請問這段姻緣是否會有結果？）"></textarea>
                 
                 <div class="flex justify-center">
-                    <button onclick="askOracle()" class="relative group px-20 py-5 overflow-hidden border border-[#D4AF37] text-[#D4AF37] hover:text-black transition-colors duration-500 interactable rounded-full">
-                        <span class="relative z-10 text-2xl tracking-[0.5em] font-bold font-calligraphy">焚香祈願</span>
-                        <div class="absolute inset-0 bg-[#D4AF37] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+                    <button onclick="askOracle()" class="relative group px-12 md:px-20 py-4 md:py-5 overflow-hidden border-2 border-[#FFD700] text-[#FFD700] hover:text-[#2A0A0A] transition-colors duration-500 interactable rounded-full shadow-[0_0_20px_rgba(255,215,0,0.3)] bg-[#3D1010]">
+                        <span class="relative z-10 text-lg md:text-2xl tracking-[0.3em] md:tracking-[0.5em] font-bold font-calligraphy">焚香祈願</span>
+                        <div class="absolute inset-0 bg-[#FFD700] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
                     </button>
                 </div>
             </div>
@@ -475,27 +532,27 @@
                         <!-- 煙霧粒子將由 JS 生成 -->
                     </div>
                 </div>
-                <p class="text-[#D4AF37] animate-pulse tracking-widest font-calligraphy text-2xl">香煙繚繞，誠心通天...</p>
+                <p class="text-[#FFD700] animate-pulse tracking-widest font-calligraphy text-xl md:text-2xl">香煙繚繞，誠心通天...</p>
             </div>
 
             <!-- 結果顯示區 -->
-            <div id="oracle-result" class="hidden oracle-response-card p-10 md:p-16 rounded-lg border border-[#D4AF37]/30 mt-8 min-h-[400px] relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+            <div id="oracle-result" class="hidden oracle-response-card p-6 md:p-16 rounded-lg border-2 mt-8 min-h-[400px] relative">
                 <!-- 裝飾角 -->
-                <div class="absolute top-4 left-4 w-6 h-6 border-t-4 border-l-4 border-[#D4AF37]"></div>
-                <div class="absolute top-4 right-4 w-6 h-6 border-t-4 border-r-4 border-[#D4AF37]"></div>
-                <div class="absolute bottom-4 left-4 w-6 h-6 border-b-4 border-l-4 border-[#D4AF37]"></div>
-                <div class="absolute bottom-4 right-4 w-6 h-6 border-b-4 border-r-4 border-[#D4AF37]"></div>
+                <div class="absolute top-4 left-4 w-4 md:w-6 h-4 md:h-6 border-t-4 border-l-4 border-[#FFD700]"></div>
+                <div class="absolute top-4 right-4 w-4 md:w-6 h-4 md:h-6 border-t-4 border-r-4 border-[#FFD700]"></div>
+                <div class="absolute bottom-4 left-4 w-4 md:w-6 h-4 md:h-6 border-b-4 border-l-4 border-[#FFD700]"></div>
+                <div class="absolute bottom-4 right-4 w-4 md:w-6 h-4 md:h-6 border-b-4 border-r-4 border-[#FFD700]"></div>
 
-                <div class="text-center mb-10 pb-6 border-b border-[#D4AF37]/20">
-                    <h3 class="text-4xl font-calligraphy text-[#D4AF37]">福德正神 靈籤</h3>
+                <div class="text-center mb-8 md:mb-10 pb-4 md:pb-6 border-b border-[#FFD700]/30">
+                    <h3 class="text-3xl md:text-4xl font-calligraphy text-[#FFD700] drop-shadow-md">福德正神 靈籤</h3>
                 </div>
 
-                <div id="oracle-content" class="text-gray-200 leading-[2.5] tracking-widest font-serif text-xl space-y-8">
+                <div id="oracle-content" class="text-[#FFF8DC] leading-[2] md:leading-[2.5] tracking-widest font-serif text-lg md:text-xl space-y-6 md:space-y-8">
                     <!-- AI 回應內容將顯示於此 -->
                 </div>
 
-                <div class="mt-16 text-center">
-                    <button onclick="resetOracle()" class="text-base text-gray-500 hover:text-[#D4AF37] transition-colors tracking-widest border-b border-transparent hover:border-[#D4AF37] pb-1">再次祈求</button>
+                <div class="mt-12 md:mt-16 text-center">
+                    <button onclick="resetOracle()" class="text-sm md:text-base text-[#FFD700]/70 hover:text-[#FFD700] transition-colors tracking-widest border-b border-transparent hover:border-[#FFD700] pb-1">再次祈求</button>
                 </div>
             </div>
 
@@ -503,22 +560,23 @@
     </section>
 
     <!-- 第五幕：互動參拜 (Footer) -->
-    <footer class="relative min-h-screen w-full flex flex-col justify-center items-center bg-[#0F0F0F] overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#D4AF37] rounded-full blur-[200px] opacity-10 animate-pulse"></div>
+    <footer class="relative min-h-[80vh] md:min-h-screen w-full flex flex-col justify-center items-center bg-[#2A0A0A] overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[800px] h-[500px] md:h-[800px] bg-[#E60012] rounded-full blur-[150px] md:blur-[200px] opacity-20 animate-pulse"></div>
         
-        <div class="z-10 text-center space-y-16">
-            <div class="seal mx-auto border-[#D4AF37] text-[#D4AF37]">線上祈福</div>
+        <div class="z-10 text-center space-y-12 md:space-y-16">
+            <div class="seal mx-auto mb-6 md:mb-8 text-black">線上祈福</div>
             
-            <h2 class="text-6xl md:text-8xl font-calligraphy text-white mb-8">願 心 所 向</h2>
+            <h2 class="text-5xl md:text-8xl font-calligraphy text-[#FFD700] mb-6 md:mb-8 drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">願 心 所 向</h2>
             
-            <a href="https://maps.app.goo.gl/rc8fjNvxUqrfoBKcA" target="_blank" class="relative group px-16 py-5 overflow-hidden border border-[#D4AF37] text-[#D4AF37] hover:text-black transition-colors duration-500 interactable inline-block">
-                <span class="relative z-10 text-2xl tracking-[0.5em] font-bold">點擊參拜</span>
-                <div class="absolute inset-0 bg-[#D4AF37] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+            <a href="https://maps.app.goo.gl/rc8fjNvxUqrfoBKcA" target="_blank" class="relative group px-12 md:px-16 py-4 md:py-5 overflow-hidden border-2 border-[#FFD700] text-[#FFD700] hover:text-[#2A0A0A] transition-colors duration-500 interactable inline-block bg-[#3D1010]">
+                <span class="relative z-10 text-lg md:text-2xl tracking-[0.3em] md:tracking-[0.5em] font-bold">點擊參拜</span>
+                <div class="absolute inset-0 bg-[#FFD700] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
             </a>
 
-            <div class="mt-24 flex gap-8 justify-center text-sm tracking-widest text-gray-500">
+            <div class="mt-16 md:mt-24 flex flex-col md:flex-row gap-4 md:gap-8 justify-center text-xs md:text-sm tracking-widest text-[#FFF8DC]/60">
                 <span>© 2025 廟宇導覽系統</span>
                 <span>設計：數位工坊</span>
+                <span class="text-[#FFD700] md:ml-4">✨ Powered by Gemini AI</span>
             </div>
         </div>
     </footer>
@@ -529,7 +587,8 @@
             const tl = gsap.timeline();
             tl.to("#loader-bar", { x: "0%", duration: 1, ease: "power2.inOut" })
               .to("#loader", { opacity: 0, duration: 1, delay: 0.2, pointerEvents: "none" })
-              .add(() => initAnimations()); 
+              .add(() => initAnimations())
+              .add(() => initWealthRain()); // 啟動背景金元寶雨
         });
 
         // 2. 初始化 Lenis 平滑滾動
@@ -565,11 +624,11 @@
         document.querySelectorAll('.interactable').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 gsap.to(cursor, { scale: 1.5, duration: 0.3 });
-                gsap.to(follower, { scale: 1.5, borderColor: "#D4AF37", borderWidth: "2px", duration: 0.3 });
+                gsap.to(follower, { scale: 1.5, borderColor: "#FFD700", borderWidth: "2px", duration: 0.3 });
             });
             el.addEventListener('mouseleave', () => {
                 gsap.to(cursor, { scale: 1, duration: 0.3 });
-                gsap.to(follower, { scale: 1, borderColor: "rgba(212, 175, 55, 0.4)", borderWidth: "1px", duration: 0.3 });
+                gsap.to(follower, { scale: 1, borderColor: "rgba(255, 215, 0, 0.4)", borderWidth: "1px", duration: 0.3 });
             });
         });
 
@@ -669,6 +728,101 @@
         }
 
         /* -----------------------------------------------------------
+           WEALTH ANIMATION (GOLD INGOT RAIN)
+           ----------------------------------------------------------- */
+        // 金元寶 SVG 圖形 (使用 path 繪製簡單元寶)
+        const ingotSVG = `
+        <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" width="40" height="24">
+            <path d="M5 25 Q25 45 50 45 T95 25 L85 55 H15 Z" fill="#DAA520" />
+            <path d="M5 25 Q25 5 50 5 T95 25 Q50 65 5 25" fill="#FFD700" />
+            <ellipse cx="50" cy="25" rx="15" ry="8" fill="#FFFACD" opacity="0.6" />
+        </svg>
+        `;
+
+        function createFloatingIngots(count = 15, containerId = 'wealth-container') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.innerHTML = ingotSVG;
+                el.classList.add('ingot');
+                
+                // 隨機大小與透明度
+                const scale = gsap.utils.random(0.5, 1.2);
+                gsap.set(el, {
+                    x: gsap.utils.random(0, window.innerWidth),
+                    y: gsap.utils.random(-100, -50),
+                    scale: scale,
+                    opacity: gsap.utils.random(0.3, 0.8)
+                });
+                
+                container.appendChild(el);
+
+                // 飄落動畫
+                gsap.to(el, {
+                    y: '110vh',
+                    x: `+=${gsap.utils.random(-50, 50)}`,
+                    rotation: gsap.utils.random(-45, 45),
+                    duration: gsap.utils.random(10, 20),
+                    repeat: -1,
+                    delay: gsap.utils.random(0, 10),
+                    ease: "none"
+                });
+            }
+        }
+
+        function createWealthBurst() {
+            // 點擊祈願時的爆發特效
+            const container = document.getElementById('wealth-container');
+            if (!container) return;
+            
+            const btn = document.querySelector('#oracle-input-container button');
+            const rect = btn.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top;
+
+            for (let i = 0; i < 30; i++) {
+                const el = document.createElement('div');
+                el.innerHTML = ingotSVG;
+                el.classList.add('ingot');
+                el.style.position = 'fixed'; // 確保固定在視窗
+                
+                gsap.set(el, {
+                    x: startX,
+                    y: startY,
+                    scale: 0,
+                    opacity: 1
+                });
+                
+                container.appendChild(el);
+
+                // 拋物線噴發
+                gsap.to(el, {
+                    x: startX + gsap.utils.random(-300, 300),
+                    y: startY + gsap.utils.random(-300, 200),
+                    rotation: gsap.utils.random(0, 360),
+                    scale: gsap.utils.random(0.8, 1.5),
+                    duration: 1.5,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        // 落地後消失
+                         gsap.to(el, {
+                             y: '+=200',
+                             opacity: 0,
+                             duration: 1,
+                             onComplete: () => el.remove()
+                         });
+                    }
+                });
+            }
+        }
+
+        function initWealthRain() {
+            createFloatingIngots(15);
+        }
+
+        /* -----------------------------------------------------------
            GEMINI AI ORACLE LOGIC
            ----------------------------------------------------------- */
         const apiKey = ""; // The execution environment provides the key at runtime.
@@ -691,6 +845,9 @@
                 return;
             }
             if (isGenerating) return;
+
+            // 觸發金元寶爆發特效！
+            createWealthBurst();
 
             // UI Transition
             isGenerating = true;
