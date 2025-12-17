@@ -236,24 +236,6 @@
             100% { transform: translate(-50%, -80px) scale(3); opacity: 0; }
         }
         
-        /* 神明選擇按鈕樣式 */
-        .deity-btn {
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            background: rgba(0, 0, 0, 0.3);
-            color: #FFF8DC;
-            transition: all 0.3s ease;
-        }
-        .deity-btn.active, .deity-btn:hover {
-            border-color: var(--c-gold);
-            background: var(--c-bg-light);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-            color: var(--c-gold);
-        }
-        .deity-btn.active {
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        }
-
         /* 結果卡片背景 - 改為深紅漸層 */
         .oracle-response-card {
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23FFD700' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"), linear-gradient(to bottom, #4A0404, #2A0A0A);
@@ -324,16 +306,17 @@
             <div class="absolute top-[20%] left-[50%] -translate-x-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-[#E60012] rounded-full blur-[120px] md:blur-[200px] opacity-10 animate-pulse" style="animation-duration: 4s;"></div>
         </div>
 
-        <div class="relative z-10 flex flex-col items-center gap-6 md:gap-10 px-4 text-center">
+        <div class="relative z-10 flex flex-col items-center gap-6 md:gap-10">
             <div class="seal mb-4 md:mb-6 interactable">永運福德</div>
             
-            <h1 class="font-calligraphy text-5xl md:text-8xl gold-text leading-relaxed tracking-widest opacity-0 hero-text">
+            <h1 class="vertical-text font-calligraphy text-5xl md:text-9xl gold-text leading-relaxed tracking-widest opacity-0 hero-text">
                 永運土地公祠
             </h1>
-            <p class="text-[#FFF8DC]/90 tracking-[0.3em] md:tracking-[0.8em] mt-6 md:mt-8 text-sm md:text-lg border-t border-[#FFD700]/50 pt-4 md:pt-6 opacity-0 hero-text font-bold">
+            <p class="text-[#FFF8DC]/90 tracking-[0.6em] md:tracking-[0.8em] mt-6 md:mt-8 text-sm md:text-lg border-t border-[#FFD700]/50 pt-4 md:pt-6 opacity-0 hero-text font-bold">
                 護佑鄉里 • 財源廣進
             </p>
             
+            <!-- 往下捲動提示 -->
             <div class="absolute bottom-20 md:bottom-10 opacity-0 hero-text animate-bounce text-[#FFD700] text-xs md:text-sm tracking-widest drop-shadow-[0_0_5px_rgba(255,215,0,0.5)]">
                 ↓ 往下捲動 納福
             </div>
@@ -521,38 +504,17 @@
         </div>
 
         <div class="max-w-4xl w-full z-10 relative">
-            <div class="text-center mb-10">
+            <div class="text-center mb-12 md:mb-16">
                 <div class="seal mx-auto mb-4 md:mb-6 text-black">靈境問事</div>
                 <h2 class="text-3xl md:text-5xl font-calligraphy text-[#FFD700] mb-6 md:mb-8 drop-shadow-[0_0_10px_rgba(255,215,0,0.3)]">數位靈籤・神明指引 ✨</h2>
                 <p class="text-[#FFF8DC]/80 tracking-[0.15em] md:tracking-[0.2em] text-base md:text-lg leading-loose">
                     請誠心默念您的姓名、生辰、住址。<br>
-                    選擇您想請示的神尊，將您的煩惱寫下。
+                    將您的煩惱或疑問寫下，祈求土地公賜予靈籤指引。
                 </p>
             </div>
 
             <!-- 輸入區 -->
             <div id="oracle-input-container" class="space-y-8 md:space-y-10 transition-all duration-500">
-                
-                <!-- 神明選擇按鈕 -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <button onclick="selectDeity(this, '福德正神')" class="deity-btn p-4 rounded-lg text-center active">
-                        <div class="text-xl font-calligraphy mb-2">福德正神</div>
-                        <div class="text-xs text-white/60">求財・生活</div>
-                    </button>
-                    <button onclick="selectDeity(this, '月下老人')" class="deity-btn p-4 rounded-lg text-center">
-                        <div class="text-xl font-calligraphy mb-2">月下老人</div>
-                        <div class="text-xs text-white/60">求緣・桃花</div>
-                    </button>
-                    <button onclick="selectDeity(this, '玉皇上帝')" class="deity-btn p-4 rounded-lg text-center">
-                        <div class="text-xl font-calligraphy mb-2">玉皇上帝</div>
-                        <div class="text-xs text-white/60">運勢・天命</div>
-                    </button>
-                    <button onclick="selectDeity(this, '義勇諸公')" class="deity-btn p-4 rounded-lg text-center">
-                        <div class="text-xl font-calligraphy mb-2">義勇諸公</div>
-                        <div class="text-xs text-white/60">驅邪・勇氣</div>
-                    </button>
-                </div>
-
                 <textarea id="user-query" rows="5" class="oracle-input w-full p-4 md:p-8 rounded-lg font-serif text-base md:text-xl tracking-wide text-center" placeholder="在此輸入您的疑惑... &#10;（例如：最近工作運途如何？ 或 請問這段姻緣是否會有結果？）"></textarea>
                 
                 <div class="flex justify-center">
@@ -570,9 +532,7 @@
                         <!-- 煙霧粒子將由 JS 生成 -->
                     </div>
                 </div>
-                <p class="text-[#FFD700] animate-pulse tracking-widest font-calligraphy text-xl md:text-2xl">
-                    正在請示 <span id="loading-deity-name">神明</span>...
-                </p>
+                <p class="text-[#FFD700] animate-pulse tracking-widest font-calligraphy text-xl md:text-2xl">香煙繚繞，誠心通天...</p>
             </div>
 
             <!-- 結果顯示區 -->
@@ -584,7 +544,7 @@
                 <div class="absolute bottom-4 right-4 w-4 md:w-6 h-4 md:h-6 border-b-4 border-r-4 border-[#FFD700]"></div>
 
                 <div class="text-center mb-8 md:mb-10 pb-4 md:pb-6 border-b border-[#FFD700]/30">
-                    <h3 id="result-title" class="text-3xl md:text-4xl font-calligraphy text-[#FFD700] drop-shadow-md">福德正神 靈籤</h3>
+                    <h3 class="text-3xl md:text-4xl font-calligraphy text-[#FFD700] drop-shadow-md">福德正神 靈籤</h3>
                 </div>
 
                 <div id="oracle-content" class="text-[#FFF8DC] leading-[2] md:leading-[2.5] tracking-widest font-serif text-lg md:text-xl space-y-6 md:space-y-8">
@@ -628,7 +588,7 @@
             tl.to("#loader-bar", { x: "0%", duration: 1, ease: "power2.inOut" })
               .to("#loader", { opacity: 0, duration: 1, delay: 0.2, pointerEvents: "none" })
               .add(() => initAnimations())
-              .add(() => initWealthRain()); 
+              .add(() => initWealthRain()); // 啟動背景金元寶雨
         });
 
         // 2. 初始化 Lenis 平滑滾動
@@ -650,16 +610,18 @@
         requestAnimationFrame(raf);
         gsap.registerPlugin(ScrollTrigger);
 
-        // 3. 自定義游標
+        // 3. 自定義游標 (僅作為裝飾)
         const cursor = document.getElementById('cursor');
         const follower = document.getElementById('cursor-follower');
         
+        // 確保游標不影響實際點擊 (CSS pointer-events: none 已設定)
         document.addEventListener('mousemove', (e) => {
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
             gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.4 });
         });
 
-        document.querySelectorAll('.interactable, button').forEach(el => {
+        // 游標互動放大效果
+        document.querySelectorAll('.interactable').forEach(el => {
             el.addEventListener('mouseenter', () => {
                 gsap.to(cursor, { scale: 1.5, duration: 0.3 });
                 gsap.to(follower, { scale: 1.5, borderColor: "#FFD700", borderWidth: "2px", duration: 0.3 });
@@ -671,7 +633,7 @@
         });
 
         function initAnimations() {
-            // Hero 文字進場
+            // 4. Hero 文字進場
             gsap.to(".hero-text", {
                 y: 0,
                 opacity: 1,
@@ -692,7 +654,7 @@
                 }
             });
 
-            // 引言文字浮現
+            // 5. 引言文字浮現
             gsap.utils.toArray('.reveal-text').forEach(text => {
                 gsap.from(text, {
                     y: 30,
@@ -716,7 +678,7 @@
                 }
             });
 
-            // 橫向捲軸
+            // 6. 橫向捲軸 (Gallery)
             const galleryWrapper = document.querySelector('.gallery-wrapper');
             const gallerySection = document.querySelector('#gallery-container');
             
@@ -749,7 +711,7 @@
                 });
             });
 
-            // 七步驟卡片進場動畫
+            // 7. 七步驟卡片進場動畫
             gsap.utils.toArray('.step-card').forEach((card, i) => {
                 gsap.from(card, {
                     y: 50,
@@ -768,6 +730,7 @@
         /* -----------------------------------------------------------
            WEALTH ANIMATION (GOLD INGOT RAIN)
            ----------------------------------------------------------- */
+        // 金元寶 SVG 圖形 (使用 path 繪製簡單元寶)
         const ingotSVG = `
         <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" width="40" height="24">
             <path d="M5 25 Q25 45 50 45 T95 25 L85 55 H15 Z" fill="#DAA520" />
@@ -776,7 +739,7 @@
         </svg>
         `;
 
-        function createFloatingIngots(count = 6, containerId = 'wealth-container') {
+        function createFloatingIngots(count = 15, containerId = 'wealth-container') {
             const container = document.getElementById(containerId);
             if (!container) return;
 
@@ -785,16 +748,18 @@
                 el.innerHTML = ingotSVG;
                 el.classList.add('ingot');
                 
+                // 隨機大小與透明度
                 const scale = gsap.utils.random(0.5, 1.2);
                 gsap.set(el, {
                     x: gsap.utils.random(0, window.innerWidth),
                     y: gsap.utils.random(-100, -50),
                     scale: scale,
-                    opacity: gsap.utils.random(0.1, 0.3) 
+                    opacity: gsap.utils.random(0.3, 0.8)
                 });
                 
                 container.appendChild(el);
 
+                // 飄落動畫
                 gsap.to(el, {
                     y: '110vh',
                     x: `+=${gsap.utils.random(-50, 50)}`,
@@ -808,6 +773,7 @@
         }
 
         function createWealthBurst() {
+            // 點擊祈願時的爆發特效
             const container = document.getElementById('wealth-container');
             if (!container) return;
             
@@ -816,21 +782,22 @@
             const startX = rect.left + rect.width / 2;
             const startY = rect.top;
 
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 30; i++) {
                 const el = document.createElement('div');
                 el.innerHTML = ingotSVG;
                 el.classList.add('ingot');
-                el.style.position = 'fixed'; 
+                el.style.position = 'fixed'; // 確保固定在視窗
                 
                 gsap.set(el, {
                     x: startX,
                     y: startY,
                     scale: 0,
-                    opacity: 0.8 
+                    opacity: 1
                 });
                 
                 container.appendChild(el);
 
+                // 拋物線噴發
                 gsap.to(el, {
                     x: startX + gsap.utils.random(-300, 300),
                     y: startY + gsap.utils.random(-300, 200),
@@ -839,6 +806,7 @@
                     duration: 1.5,
                     ease: "power2.out",
                     onComplete: () => {
+                        // 落地後消失
                          gsap.to(el, {
                              y: '+=200',
                              opacity: 0,
@@ -851,55 +819,15 @@
         }
 
         function initWealthRain() {
-            createFloatingIngots(6);
+            createFloatingIngots(15);
         }
 
         /* -----------------------------------------------------------
            GEMINI AI ORACLE LOGIC
            ----------------------------------------------------------- */
-        // 修改：移除前端 API Key，改由後端處理
+        const apiKey = ""; // The execution environment provides the key at runtime.
         let isGenerating = false;
         let smokeInterval;
-        let selectedDeity = "福德正神";
-
-        // 神明 Persona 設定
-        const deityPrompts = {
-            "福德正神": `你是「永運土地公祠」的福德正神（土地公），一位慈祥、親切且充滿智慧的長者。
-                你的語氣：溫暖、平易近人，像是在跟孫子說話。
-                你的專長：保佑財運亨通、工作順利、生活平安、鄰里和睦。
-                
-                請針對信徒的煩惱，賜予一支【靈籤】（七言絕句）與【解曰】。
-                解籤時請多用鼓勵的話語，並給予務實的生活建議。`,
-            
-            "月下老人": `你是掌管天下姻緣的「月下老人」，一位面帶微笑、手持紅線的慈祥神仙。
-                你的語氣：溫柔、喜氣、充滿愛意，喜歡用花開、月圓、紅線等比喻。
-                你的專長：牽紅線、賜良緣、化解感情糾紛、增進人緣。
-                
-                請針對信徒的感情煩惱，賜予一支【靈籤】（七言絕句，多用愛情隱喻）與【解曰】。
-                解籤時請溫柔地指點迷津，告訴信徒如何在感情中修身養性或把握良機。`,
-                
-            "玉皇上帝": `你是萬神之主「玉皇上帝」，至高無上、莊嚴威儀的宇宙主宰。
-                你的語氣：莊重、權威、宏觀，帶有天命不可違但天道酬勤的哲理。
-                你的專長：指引人生大方向、解決重大決策、賜予天命與運勢。
-                
-                請針對信徒的重大疑惑，賜予一支【靈籤】（七言絕句，風格大氣）與【解曰】。
-                解籤時請從大局觀出發，教導信徒順應天時、修德積善以改變命運。`,
-                
-            "義勇諸公": `你是英勇正氣的「義勇諸公」，一群保家衛國、忠肝義膽的神靈。
-                你的語氣：剛正、豪邁、直接、充滿力量。
-                你的專長：驅邪避凶、斬斷爛桃花、賜予勇氣、守護正義、防小人。
-                
-                請針對信徒遇到的困難或恐懼，賜予一支【靈籤】（七言絕句，風格剛強）與【解曰】。
-                解籤時請給予信徒信心與勇氣，告訴他們如何正直行事，破除眼前的障礙。`
-        };
-
-        function selectDeity(btn, name) {
-            // 更新 UI 狀態
-            document.querySelectorAll('.deity-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            selectedDeity = name;
-        }
 
         function createSmoke() {
             const container = document.querySelector('.loading-incense');
@@ -918,16 +846,13 @@
             }
             if (isGenerating) return;
 
+            // 觸發金元寶爆發特效！
             createWealthBurst();
 
             // UI Transition
             isGenerating = true;
             document.getElementById('oracle-input-container').style.opacity = '0';
             document.getElementById('oracle-input-container').style.pointerEvents = 'none';
-            
-            // 更新載入文字
-            document.getElementById('loading-deity-name').innerText = selectedDeity;
-
             setTimeout(() => {
                 document.getElementById('oracle-input-container').classList.add('hidden');
                 document.getElementById('oracle-loading').classList.remove('hidden');
@@ -936,12 +861,9 @@
             }, 500);
 
             try {
-                // 獲取對應神明的 System Prompt
-                const basePrompt = deityPrompts[selectedDeity];
-                const fullPrompt = `${basePrompt}\n\n回應格式要求：\n1. **【靈籤】**：創作一首七言絕句（繁體中文）。\n2. **【解曰】**：白話文解釋籤詩，並針對「${userQuery}」給予具體建議。\n請使用 Markdown 格式。`;
+                const systemPrompt = "你是歷史悠久的「永運土地公祠」的守護神靈（福德正神）。信徒現在遇到了煩惱，請發揮你的神力與智慧，為他指點迷津。你的回應必須包含兩個部分：\n\n1. **【靈籤】**：創作一首四句七言絕句（繁體中文），內容必須隱喻信徒問題的解答或方向，風格古雅。\n2. **【解曰】**：以溫暖、慈悲且撫慰人心的口吻（繁體中文），解釋籤詩的含義，並針對信徒的問題給予具體的建議或安慰。語氣要像一位慈祥的長者。\n\n請不要使用過於艱深難懂的古文，確保現代人能讀懂神明的關懷。請使用 Markdown 格式編排。";
                 
-                // 呼叫您的後端 API
-                const responseText = await callGeminiAPI(fullPrompt);
+                const responseText = await callGeminiAPI(userQuery, systemPrompt);
                 
                 displayResult(responseText);
 
@@ -951,16 +873,19 @@
             }
         }
 
-        async function callGeminiAPI(promptText) {
-            // 修改：使用您的自架後端網址
-            const url = `https://god-openapi.asd59128965.workers.dev/api/chat`;
+        async function callGeminiAPI(userPrompt, systemPrompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             
             const payload = {
                 contents: [{
-                    parts: [{ text: promptText }]
-                }]
+                    parts: [{ text: userPrompt }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
             };
 
+            // Retry logic with exponential backoff
             const maxRetries = 3;
             let attempt = 0;
             
@@ -993,10 +918,6 @@
             const loadingEl = document.getElementById('oracle-loading');
             const resultEl = document.getElementById('oracle-result');
             const contentEl = document.getElementById('oracle-content');
-            const resultTitle = document.getElementById('result-title');
-
-            // 更新結果標題
-            resultTitle.innerText = `${selectedDeity} 靈籤`;
 
             // Hide loading
             gsap.to(loadingEl, { opacity: 0, duration: 0.5, onComplete: () => {
@@ -1005,6 +926,7 @@
                 
                 // Show result
                 resultEl.classList.remove('hidden');
+                // Use marked.js to parse markdown
                 contentEl.innerHTML = marked.parse(text);
                 
                 gsap.fromTo(resultEl, 
