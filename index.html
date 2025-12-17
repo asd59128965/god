@@ -306,13 +306,14 @@
             <div class="absolute top-[20%] left-[50%] -translate-x-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-[#E60012] rounded-full blur-[120px] md:blur-[200px] opacity-10 animate-pulse" style="animation-duration: 4s;"></div>
         </div>
 
-        <div class="relative z-10 flex flex-col items-center gap-6 md:gap-10">
+        <div class="relative z-10 flex flex-col items-center gap-6 md:gap-10 px-4 text-center">
             <div class="seal mb-4 md:mb-6 interactable">永運福德</div>
             
-            <h1 class="vertical-text font-calligraphy text-5xl md:text-9xl gold-text leading-relaxed tracking-widest opacity-0 hero-text">
+            <!-- 修改：移除 vertical-text，改為橫向排版，調整字體大小適應橫排 -->
+            <h1 class="font-calligraphy text-5xl md:text-8xl gold-text leading-relaxed tracking-widest opacity-0 hero-text">
                 永運土地公祠
             </h1>
-            <p class="text-[#FFF8DC]/90 tracking-[0.6em] md:tracking-[0.8em] mt-6 md:mt-8 text-sm md:text-lg border-t border-[#FFD700]/50 pt-4 md:pt-6 opacity-0 hero-text font-bold">
+            <p class="text-[#FFF8DC]/90 tracking-[0.3em] md:tracking-[0.8em] mt-6 md:mt-8 text-sm md:text-lg border-t border-[#FFD700]/50 pt-4 md:pt-6 opacity-0 hero-text font-bold">
                 護佑鄉里 • 財源廣進
             </p>
             
@@ -739,7 +740,7 @@
         </svg>
         `;
 
-        function createFloatingIngots(count = 15, containerId = 'wealth-container') {
+        function createFloatingIngots(count = 6, containerId = 'wealth-container') {
             const container = document.getElementById(containerId);
             if (!container) return;
 
@@ -748,13 +749,13 @@
                 el.innerHTML = ingotSVG;
                 el.classList.add('ingot');
                 
-                // 隨機大小與透明度
+                // 隨機大小與透明度 - 調整透明度為 0.1 ~ 0.3 (很淡)
                 const scale = gsap.utils.random(0.5, 1.2);
                 gsap.set(el, {
                     x: gsap.utils.random(0, window.innerWidth),
                     y: gsap.utils.random(-100, -50),
                     scale: scale,
-                    opacity: gsap.utils.random(0.3, 0.8)
+                    opacity: gsap.utils.random(0.1, 0.3) 
                 });
                 
                 container.appendChild(el);
@@ -782,7 +783,8 @@
             const startX = rect.left + rect.width / 2;
             const startY = rect.top;
 
-            for (let i = 0; i < 30; i++) {
+            // 減少爆發數量至 12 個
+            for (let i = 0; i < 12; i++) {
                 const el = document.createElement('div');
                 el.innerHTML = ingotSVG;
                 el.classList.add('ingot');
@@ -792,7 +794,7 @@
                     x: startX,
                     y: startY,
                     scale: 0,
-                    opacity: 1
+                    opacity: 0.8 // 稍微降低爆發時的透明度
                 });
                 
                 container.appendChild(el);
@@ -819,7 +821,8 @@
         }
 
         function initWealthRain() {
-            createFloatingIngots(15);
+            // 減少背景金元寶數量為 6 個
+            createFloatingIngots(6);
         }
 
         /* -----------------------------------------------------------
