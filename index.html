@@ -828,7 +828,8 @@
         /* -----------------------------------------------------------
            GEMINI AI ORACLE LOGIC
            ----------------------------------------------------------- */
-        const apiKey = ""; // The execution environment provides the key at runtime.
+        // 修改：改為從 LocalStorage 獲取 API Key，避免寫死在程式碼中
+        const apiKey = localStorage.getItem("gemini_api_key") || ""; 
         let isGenerating = false;
         let smokeInterval;
 
